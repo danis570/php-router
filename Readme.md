@@ -20,7 +20,7 @@ In version 1.0.0, the following are not supported:
     * Controller
     * Middleware
 
------------------------ VERSION 1.0.0 ------------------------
+----------------------- VERSION 1.1.0 ------------------------
 
 New Features
 
