@@ -6,21 +6,23 @@ class Router
 {
     public static array $routes = [];
 
-    public static function get(string $path, array $controller)
+    public static function get(string $path, array $controller, array $middlewares = [])
     {
         self::$routes[] = [
             'method' => 'GET',
             'path' => $path,
             'controller' => $controller,
+            'middlewares' => $middlewares,
         ];
     }
 
-    public static function post(string $path, array $controller)
+    public static function post(string $path, array $controller, array $middlewares = [])
     {
         self::$routes[] = [
             'method' => 'POST',
             'path' => $path,
             'controller' => $controller,
+            'middlewares' => $middlewares,
         ];
     }
 
@@ -34,11 +36,16 @@ class Router
                 $method == $route['method'] &&
                 $path == $route['path']
             ) {
+                foreach ($route['middlewares'] as $middleware) {
+                    $instanceMiddleware = new $middleware();
+                    $instanceMiddleware->before();
+                }
+
                 $controller = $route['controller'][0];
                 $func = $route['controller'][1];
 
                 $instance = new $controller();
-                $instance->$func();
+                echo $instance->$func();
                 return;
             }
         }
